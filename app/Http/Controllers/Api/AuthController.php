@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -61,5 +62,22 @@ class AuthController extends Controller
                 'message' => 'Registration Failed',
             ],500);
         }
+    }
+
+    public function logout(Request $request) : JsonResponse
+    {
+        auth()->user()->tokens()->delete();
+        
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ], 200);
+    }
+
+    public function profile(Request $request) : JsonResponse
+    {
+        return response()->json([
+            'message' => 'User profile',
+            'user' => auth()->user()
+        ], 200);
     }
 }
